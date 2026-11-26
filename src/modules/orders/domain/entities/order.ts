@@ -1,7 +1,5 @@
-export type OrderItem = {
-  productId: string;
-  quantity: number;
-};
+import { Money } from "../value-objects/money";
+import { OrderItem } from "../value-objects/order-item";
 
 export type OrderStatus = "PENDING" | "SHIPPED" | "CANCELED";
 
@@ -27,5 +25,13 @@ export class Order {
 
   getStatus(): OrderStatus {
     return this.status;
+  }
+
+  total(): Money {
+    let total = new Money(0);
+    for (const item of this.items) {
+      total = total.add(item.subtotal());
+    }
+    return total;
   }
 }
